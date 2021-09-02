@@ -12,7 +12,7 @@
 
 ## Quick Start
 
-1. Clone `git https://github.com/GrandlineX/skeleton-project.git && cd skeleton-project` 
+1. Clone `git clone https://github.com/GrandlineX/skeleton-project.git && cd skeleton-project` 
 2. Install dependencies `npm install`
 3. Start database `docker-compose up -d`
 4. Build project `npm run build`;
