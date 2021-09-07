@@ -25,4 +25,12 @@ export default class AuthModule extends BaseKernelModule<
   startup(): Promise<void> {
     return Promise.resolve(undefined);
   }
+
+  beforeServiceStart(): Promise<void> {
+    return Promise.resolve(undefined);
+  }
+
+  final(): Promise<void> {
+    return Promise.resolve(undefined);
+  }
 }
