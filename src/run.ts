@@ -1,23 +1,15 @@
-import Path from 'path';
+import * as Path from 'path';
 import { config } from 'dotenv';
-import Kernel, { createFolderIfNotExist } from '@grandlinex/kernel';
-import AuthModule from './AuthModule';
+import { createFolderIfNotExist } from '@grandlinex/kernel';
+import SkeletonKernel from './SkeletonKernel';
 
-config();
-
-const appName = 'SkeletonApp';
-const appCode = 'skeleton';
 const testPathData = Path.join(__dirname, '..', 'data');
 const testPath = Path.join(__dirname, '..', 'data', 'config');
-
-const apiPort = 9257;
+config();
 
 createFolderIfNotExist(testPathData);
 createFolderIfNotExist(testPath);
 
-const kernel = new Kernel(appName, appCode, testPath, apiPort);
-kernel.setTrigerFunction('pre', async (ik) => {
-  ik.addModule(new AuthModule(ik));
-});
+const kernel = new SkeletonKernel();
 
 kernel.start();
