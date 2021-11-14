@@ -1,45 +1,47 @@
-import { generateSeed, PGConnector } from '@grandlinex/kernel';
+import { generateSeed, IBaseKernelModule, SQLCon } from '@grandlinex/kernel';
+import { RunResult } from 'better-sqlite3';
 import { UserRow } from '../lib/DBTypes';
+import ExampleEntity from './Entities/ExampleEntity';
 
-export default class AuthDb extends PGConnector {
+export default class AuthDb extends SQLCon {
+  constructor(mod: IBaseKernelModule<any, any, any, any>) {
+    super(mod, '0');
+    this.registerEntity(new ExampleEntity('', 0, ''));
+  }
+
   async initNewDB(): Promise<void> {
     const seed = generateSeed();
-    const hash = this.module
-      .getKernel()
-      .getCryptoClient()
-      ?.getHash(seed, `${process.env.SERVER_PASSWOR}`);
+    const cc = this.getKernel().getCryptoClient();
+    const store = this.getKernel().getConfigStore();
+    const hash = cc?.getHash(seed, `${store.get('SERVER_PASSWORD')}`);
     await this.execScripts([
       {
         exec: `CREATE TABLE ${this.schemaName}.auth_user
                        (
-                           id        SERIAL PRIMARY KEY NOT NULL,
+                           id        INTEGER PRIMARY KEY NOT NULL,
                            user_name TEXT               NOT NULL UNIQUE,
                            password  TEXT               NOT NULL,
                            seed  TEXT                   NOT NULL,
-                           created   timestamp          NOT NULL DEFAULT NOW(),
+                           created   text                 NOT NULL ,
                            disabled  BOOLEAN            NOT NULL DEFAULT false
                        );`,
         param: [],
       },
       {
-        exec: `INSERT INTO ${this.schemaName}.auth_user (user_name, password,seed)
-                       VALUES ( 'admin', $1,$2);`,
-        param: [hash, seed],
+        exec: `INSERT INTO ${this.schemaName}.auth_user (user_name, password,seed,created)
+                       VALUES ( 'admin', ?, ?, ?);`,
+        param: [hash, seed, new Date().toString()],
       },
     ]);
   }
 
   async getUserByName(name: string): Promise<UserRow | null> {
     try {
-      const query = await this.db?.query(
-        `SELECT * FROM ${this.schemaName}.auth_user WHERE user_name=$1 
-        `,
-        [name]
+      const query = this.db?.prepare(
+        `SELECT * FROM ${this.schemaName}.auth_user WHERE user_name=? 
+        `
       );
-      if (query?.rows.length !== 1) {
-        return null;
-      }
-      return query?.rows[0];
+      return query?.get([name]);
     } catch (e) {
       this.error(e);
       return null;
@@ -52,15 +54,16 @@ export default class AuthDb extends PGConnector {
     seed: string
   ): Promise<number> {
     try {
-      const query = await this.db?.query(
-        `INSERT INTO ${this.schemaName}.auth_user (user_name,password,seed) VALUES ($1,$2,$3) RETURNING id; 
-        `,
-        [name, password, seed]
-      );
-      if (query?.rows.length !== 1) {
+      const query = await this.execScripts([
+        {
+          exec: `INSERT INTO ${this.schemaName}.auth_user (user_name,password,seed,created) VALUES (?,?,?,?); `,
+          param: [name, password, seed, new Date().toString()],
+        },
+      ]);
+      if (query.length !== 1) {
         return -1;
       }
-      return query?.rows[0].id;
+      return query[0].lastInsertRowid as number;
     } catch (e) {
       this.error(e);
       return -1;
@@ -69,10 +72,10 @@ export default class AuthDb extends PGConnector {
 
   async getUserList(): Promise<UserRow[]> {
     try {
-      const query = await this.db?.query(
+      const query = this.db?.prepare(
         `SELECT * from ${this.schemaName}.auth_user`
       );
-      return query?.rows || [];
+      return query?.all() || [];
     } catch (e) {
       this.error(e);
       return [];

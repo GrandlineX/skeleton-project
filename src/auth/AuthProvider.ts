@@ -4,7 +4,17 @@ import { Request } from 'express';
 
 import { AuthDb } from '../database';
 
+/**
+ * Example AuthProvider to authorize user
+ */
 export default class AuthProvider extends BaseAuthProvider {
+  module: IBaseKernelModule<AuthDb, null, null, null>;
+
+  constructor(module: IBaseKernelModule<AuthDb, null, null, null>) {
+    super();
+    this.module = module;
+  }
+
   async bearerTokenValidation(req: Request): Promise<JwtToken | null> {
     const cc = this.module.getKernel().getCryptoClient();
     let token: string | undefined;
@@ -28,13 +38,6 @@ export default class AuthProvider extends BaseAuthProvider {
       return tokenData;
     }
     return null;
-  }
-
-  module: IBaseKernelModule<AuthDb, null, null, null>;
-
-  constructor(module: IBaseKernelModule<AuthDb, null, null, null>) {
-    super();
-    this.module = module;
   }
 
   async authorizeToken(

@@ -17,7 +17,7 @@ export default class AuthModule extends BaseKernelModule<
   }
 
   async initModule(): Promise<void> {
-    const db = new AuthDb(this, '0');
+    const db = new AuthDb(this);
     this.setDb(db);
     this.getKernel().getCryptoClient()?.setAuthProvider(new AuthProvider(this));
   }

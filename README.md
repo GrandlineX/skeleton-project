@@ -14,9 +14,8 @@
 
 1. Clone `git clone https://github.com/GrandlineX/skeleton-project.git && cd skeleton-project` 
 2. Install dependencies `npm install`
-3. Start database `docker-compose up -d`
-4. Build project `npm run build`;
-5. Build project `npm run start`;
+3. Build project `npm run build`;
+4. Build project `npm run start`;
 
 ## Additional commands
 

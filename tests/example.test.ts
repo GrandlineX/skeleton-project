@@ -1,5 +1,3 @@
-
-import { config } from 'dotenv';
 import * as Path from 'path';
 import  {
   createFolderIfNotExist,
@@ -8,7 +6,6 @@ import  {
  import {randomUUID} from "crypto";
 import SkeletonKernel from "../src/SkeletonKernel";
 import axios from "axios";
-  config();
 
 const msiPath = Path.join(__dirname, '..', 'data');
 const testPath = Path.join(__dirname, '..', 'data', 'config');
@@ -28,19 +25,20 @@ function testKernelUtil(port: number) {
 let port = 9900;
 let kernel = testKernelUtil(port);
 
+let store=kernel.getConfigStore();
 const testText = 'hello_world';
 
 describe('Clean Startup', () => {
   let jwtToken:any;
   test('definePreload', async () => {
     expect(kernel.getState()).toBe('init');
-    expect(kernel.getModuleList()).toHaveLength(1);
+    expect(kernel.getModCount()).toBe(1);
 
   });
   test('start kernel', async () => {
     const result = await kernel.start();
     expect(result).toBe(true);
-    expect(kernel.getModuleList()).toHaveLength(1);
+    expect(kernel.getModCount()).toBe(1);
     expect(kernel.getState()).toBe('running');
   });
 
@@ -52,7 +50,7 @@ describe('Clean Startup', () => {
 
     const token = await axios.post<{token:string}>(`http://localhost:${port}/token`,{
       username: "admin",
-      token: process.env.SERVER_PASSWOR,
+      token:store.get("SERVER_PASSWORD"),
     });
     expect(token.status).toBe(200);
     const json = token.data

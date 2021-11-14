@@ -1,22 +1,53 @@
-import Kernel, { cors, KernelEndpoint } from '@grandlinex/kernel';
+import Kernel, {
+  BaseKernelModule,
+  cors,
+  KernelEndpoint,
+  KernelModule,
+} from '@grandlinex/kernel';
 import * as Path from 'path';
 import AuthModule from './AuthModule';
 
 const appName = 'SkeletonApp';
 const appCode = 'skeleton';
-const testPathData = Path.join(__dirname, '..', 'data');
+const root = Path.join(__dirname, '..');
+/**
+ * (@) testPath are the place for storing temp files, db data and configuration
+ */
 const testPath = Path.join(__dirname, '..', 'data', 'config');
 
 const apiPort = 9257;
+
+/**
+ * Extending GrandLineX with your own kernel interface for your needs
+ */
 export default class SkeletonKernel extends Kernel {
   constructor() {
-    super(appName, appCode, testPath);
+    super({ appName, appCode, pathOverride: testPath, envFilePath: root });
+
+    /**
+     * Register the new Module in Kernel
+     */
     this.addModule(new AuthModule(this));
-    this.setTrigerFunction('load', async (ik) => {
+
+    /**
+     * Use Dev Header for the Express server to deal with some origin error in dev
+     */
+    this.setTriggerFunction('load', async (ik) => {
       const endpoint = ik.getModule().getEndpoint() as KernelEndpoint;
       const app = endpoint.getApp();
       app.use(cors);
     });
+
+    /**
+     * Overwrite the default app server port
+     */
     this.setAppServerPort(apiPort);
+
+    const mod = this.getModule() as KernelModule;
+
+    /**
+     * Force the Kernel module to use a SQLightDB instead of an PostgreSQL
+     */
+    mod.useLightDB = true;
   }
 }
