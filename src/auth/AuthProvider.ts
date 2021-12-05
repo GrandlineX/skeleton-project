@@ -1,22 +1,20 @@
-import { BaseAuthProvider, IBaseKernelModule } from '@grandlinex/kernel';
+import { BaseAuthProvider, IKernel } from '@grandlinex/kernel';
 import { JwtToken } from '@grandlinex/kernel/dist/classes/BaseAuthProvider';
 import { Request } from 'express';
-
-import { AuthDb } from '../database';
 
 /**
  * Example AuthProvider to authorize user
  */
 export default class AuthProvider extends BaseAuthProvider {
-  module: IBaseKernelModule<AuthDb, null, null, null>;
+  kernel: IKernel;
 
-  constructor(module: IBaseKernelModule<AuthDb, null, null, null>) {
+  constructor(kernel: IKernel) {
     super();
-    this.module = module;
+    this.kernel = kernel;
   }
 
   async bearerTokenValidation(req: Request): Promise<JwtToken | null> {
-    const cc = this.module.getKernel().getCryptoClient();
+    const cc = this.kernel.getCryptoClient();
     let token: string | undefined;
     if (req.headers.authorization !== undefined) {
       const authHeader = req.headers.authorization;
@@ -45,14 +43,11 @@ export default class AuthProvider extends BaseAuthProvider {
     token: string,
     requestType: string
   ): Promise<boolean> {
-    const adb = this.module.getDb() as AuthDb;
-    const cc = this.module.getKernel().getCryptoClient();
-    const user = await adb.getUserByName(username);
-    if (!user) {
+    if (username !== 'admin') {
       return false;
     }
-    const a = cc?.getHash(user.seed, token);
-    if (!a || a !== user.password) {
+    const password = this.kernel.getConfigStore().get('SERVER_PASSWORD');
+    if (token !== password) {
       return false;
     }
 

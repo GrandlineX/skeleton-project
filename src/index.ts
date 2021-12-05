@@ -1,4 +1,4 @@
-import AuthModule from './AuthModule';
+import ExampleModule from './ExampleModule';
 
 export * from './database';
-export { AuthModule };
+export { ExampleModule };

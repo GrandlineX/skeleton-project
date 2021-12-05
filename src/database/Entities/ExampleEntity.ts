@@ -1,16 +1,26 @@
-import { CoreEntity } from '@grandlinex/kernel';
+import { Column, CoreEntity, Entity } from '@grandlinex/kernel';
 
+@Entity('ExampleEntity')
 export default class ExampleEntity extends CoreEntity {
+  @Column()
   title: string;
 
-  age?: number;
+  @Column({
+    canBeNull: true,
+    dataType: 'int',
+  })
+  age: number | null;
 
-  description?: string;
+  @Column({
+    canBeNull: true,
+    dataType: 'text',
+  })
+  description: string | null;
 
   constructor(title: string, age?: number, description?: string) {
-    super(0);
+    super();
     this.title = title;
-    this.age = age;
-    this.description = description;
+    this.age = age || null;
+    this.description = description || null;
   }
 }

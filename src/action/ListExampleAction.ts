@@ -5,13 +5,14 @@ import {
 } from '@grandlinex/kernel';
 import e from 'express';
 import { JwtToken } from '@grandlinex/kernel/dist/classes/BaseAuthProvider';
-import { AuthDb } from '../database';
+import { ExampleDB } from '../database';
+import ExampleEntity from '../database/Entities/ExampleEntity';
 
 /**
  * @name ListUserAction
  *
  * @openapi
- * /user/list:
+ * /example/list:
  *   get:
  *     summary: User list
  *     tags:
@@ -26,21 +27,23 @@ import { AuthDb } from '../database';
  *               items:
  *                   type: object
  *                   properties:
- *                     id:
+ *                     e_id:
  *                       type: number
- *                     user_name:
+ *                     title:
  *                       type: string
- *                     disabled:
- *                       type: boolean
+ *                     age:
+ *                       type: number
+ *                     description:
+ *                       type: string
  *       401:
  *         description: invalid token / not authorized
  *       403:
  *         description:  not authorized
  */
 
-export default class ListUserAction extends BaseApiAction {
+export default class ListExampleAction extends BaseApiAction {
   constructor(module: IBaseKernelModule<any, any, any, any>) {
-    super('GET', '/user/list', module, module.getKernel().getModule());
+    super('GET', '/example/list', module, module.getKernel().getModule());
     this.handler = this.handler.bind(this);
   }
 
@@ -55,25 +58,19 @@ export default class ListUserAction extends BaseApiAction {
     if (data) {
       const allowed = await cc.permissonValidation(data, 'admin');
       if (allowed) {
-        const mdb = this.getModule().getDb() as AuthDb;
-        const list = await mdb.getUserList();
-        const outList: {
-          user_name: string;
-          id: number;
-          disabled: boolean;
-        }[] = [];
-        list.forEach(({ user_name, id, disabled }) => {
-          outList.push({
-            user_name,
-            id,
-            disabled,
-          });
+        const mdb = this.getModule().getDb() as ExampleDB;
+        const EEW = mdb.getEntityWrapper<ExampleEntity>('ExampleEntity');
+        const ret = await EEW?.getObjList({
+          age: 42,
         });
-
+        if (!ret) {
+          res.sendStatus(500);
+          return;
+        }
         res
           .status(200)
           .header([['Content-Type', 'application/json']])
-          .send(outList);
+          .send(ret);
         return;
       }
     }

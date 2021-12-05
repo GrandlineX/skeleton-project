@@ -1,11 +1,8 @@
-import Kernel, {
-  BaseKernelModule,
-  cors,
-  KernelEndpoint,
-  KernelModule,
-} from '@grandlinex/kernel';
+import Kernel, { cors, KernelEndpoint, KernelModule } from '@grandlinex/kernel';
 import * as Path from 'path';
-import AuthModule from './AuthModule';
+import AuthModule from '@grandlinex/bundle-simple-auth';
+import ExampleModule from './ExampleModule';
+import AuthProvider from './auth/AuthProvider';
 
 const appName = 'SkeletonApp';
 const appCode = 'skeleton';
@@ -27,12 +24,13 @@ export default class SkeletonKernel extends Kernel {
     /**
      * Register the new Module in Kernel
      */
-    this.addModule(new AuthModule(this));
+    this.addModule(new ExampleModule(this));
 
     /**
      * Use Dev Header for the Express server to deal with some origin error in dev
      */
     this.setTriggerFunction('load', async (ik) => {
+      ik.getCryptoClient()?.setAuthProvider(new AuthProvider(ik));
       const endpoint = ik.getModule().getEndpoint() as KernelEndpoint;
       const app = endpoint.getApp();
       app.use(cors);

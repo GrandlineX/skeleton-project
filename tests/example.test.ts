@@ -3,7 +3,6 @@ import  {
   createFolderIfNotExist,
   sleep
 } from "@grandlinex/kernel";
- import {randomUUID} from "crypto";
 import SkeletonKernel from "../src/SkeletonKernel";
 import axios from "axios";
 
@@ -58,29 +57,16 @@ describe('Clean Startup', () => {
     expect(json.token).not.toBeUndefined();
     jwtToken=json.token;
     const res = await cc?.jwtVerifyAccessToken(json.token);
-    expect(await cc?.permissonValidation(jwtToken,"api")).toBeTruthy()
-    expect(res?.username).toBe("admin");
-
-  });
-
-
-  test("test api auth fail",async ()=>{
-    const requestOptions: RequestInit = {
-      method: 'GET',
-      redirect: 'follow',
-    };
-
-    try {
-      const testcall = await axios.get<any>(
-          `http://localhost:${port}/test/auth`,
-      );
-      expect(testcall.status).toBe(401);
-
-    }catch (error:any){
-      expect(error.response.status).toBe(401);
+    if (res){
+        expect(await cc?.permissonValidation(res,"admin")).toBeTruthy()
+        expect(res?.username).toBe("admin");
+    }else {
+        expect(true).toBeFalsy()
     }
 
+
   });
+
 
 
 
@@ -101,7 +87,7 @@ describe('Clean Startup', () => {
   test("user list",async ()=>{
 
     const testcall = await axios.get(
-        `http://localhost:${port}/user/list`,
+        `http://localhost:${port}/example/list`,
         {
           headers:{
             Authorization:`bearer ${jwtToken}`
@@ -111,22 +97,6 @@ describe('Clean Startup', () => {
     expect(testcall.status).toBe(200);
   });
 
-
-  test("user add",async ()=>{
-
-    const testcall = await axios.post(
-        `http://localhost:${port}/user/add`,{
-          username:randomUUID(),
-          password:randomUUID()
-        },
-        {
-          headers:{
-            Authorization:`bearer ${jwtToken}`
-          }
-        }
-    );
-    expect(testcall.status).toBe(200);
-  });
 
 
   test('exit kernel', async () => {
