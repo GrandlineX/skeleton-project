@@ -1,5 +1,5 @@
 # skeleton-project
-> GrandLineX skeleton project
+> GrandLineX Express-Kernel Skeleton project
 
 ## Includes
 

@@ -3,12 +3,11 @@ import  {
   createFolderIfNotExist,
   sleep
 } from "@grandlinex/kernel";
-import SkeletonKernel from "../src/SkeletonKernel";
 import axios from "axios";
+import SkeletonKernel from "../src";
 
 const msiPath = Path.join(__dirname, '..', 'data');
 const testPath = Path.join(__dirname, '..', 'data', 'config');
- process.env.DLOG_LEVEL = 'debug';
 
 function testKernelUtil(port: number) {
    const kernel=  new SkeletonKernel();
