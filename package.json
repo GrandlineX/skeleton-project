@@ -1,6 +1,6 @@
 {
   "name": "@grandlinex/skeleton",
-  "version": "0.16.0",
+  "version": "0.16.1",
   "description": "GrandLineX Express-Skeleton Project",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,7 +20,7 @@
     "@grandlinex/kernel": "^0.17.1",
     "express": "^4.17.2",
     "axios": "^0.24.0"
-   },
+  },
   "devDependencies": {
     "@types/express": "^4.17.13",
     "@types/jest": "^27.0.3",
