@@ -1,0 +1,9 @@
+ include:
+ - project: 'grandlinex/templates'
+   file: '/stages.yml'   
+ - project: 'grandlinex/templates'
+   file: '/prod/core-bundle.yml'
+ - project: 'grandlinex/templates'
+   file: '/build/core-bundle.yml'
+ - project: 'grandlinex/templates'
+   file: '/update/update-glx.yml'
