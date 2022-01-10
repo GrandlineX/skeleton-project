@@ -30,7 +30,7 @@ export default class SkeletonKernel extends Kernel {
      */
     this.setTriggerFunction('load', async (ik) => {
       ik.getCryptoClient()?.setAuthProvider(new AuthProvider(ik));
-      const endpoint = ik.getModule().getEndpoint() as KernelEndpoint;
+      const endpoint = ik.getModule().getPresenter() as KernelEndpoint;
       const app = endpoint.getApp();
       app.use(cors);
     });
