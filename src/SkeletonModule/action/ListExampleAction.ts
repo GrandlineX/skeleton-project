@@ -61,7 +61,7 @@ export default class ListExampleAction extends BaseApiAction {
         const mdb = this.getModule().getDb() as ExampleDB;
         const EEW = mdb.getEntityWrapper<ExampleEntity>('ExampleEntity');
         const ret = await EEW?.getObjList({
-          age: 42,
+          search: { age: 42 },
         });
         if (!ret) {
           res.sendStatus(500);
