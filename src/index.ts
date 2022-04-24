@@ -39,12 +39,5 @@ export default class SkeletonKernel extends Kernel {
      * Overwrite the default app server port
      */
     this.setAppServerPort(apiPort);
-
-    const mod = this.getModule() as KernelModule;
-
-    /**
-     * Force the Kernel module to use a SQLightDB instead of an PostgreSQL
-     */
-    mod.useLightDB = true;
   }
 }

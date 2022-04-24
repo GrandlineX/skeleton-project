@@ -57,7 +57,7 @@ describe('Clean Startup', () => {
     jwtToken=json.token;
     const res = await cc?.jwtVerifyAccessToken(json.token);
     if (res){
-        expect(await cc?.permissonValidation(res,"admin")).toBeTruthy()
+        expect(await cc?.permissionValidation(res,"admin")).toBeTruthy()
         expect(res?.username).toBe("admin");
     }else {
         expect(true).toBeFalsy()

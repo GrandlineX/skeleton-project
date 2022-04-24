@@ -1,16 +1,16 @@
 import {
   CoreEntityWrapper,
   IBaseKernelModule,
-  SQLCon,
+  InMemDB,
 } from '@grandlinex/kernel';
 
 import ExampleEntity from './Entities/ExampleEntity';
 
-export default class ExampleDB extends SQLCon {
+export default class ExampleDB extends InMemDB {
   exampleEntity: CoreEntityWrapper<ExampleEntity>;
 
   constructor(mod: IBaseKernelModule<any, any, any, any>) {
-    super(mod, '0');
+    super(mod);
     this.exampleEntity = this.registerEntity(new ExampleEntity(''));
   }
 
