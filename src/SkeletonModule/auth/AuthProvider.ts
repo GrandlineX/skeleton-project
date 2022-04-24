@@ -1,4 +1,9 @@
-import { BaseAuthProvider, IKernel } from '@grandlinex/kernel';
+import {
+  AuthResult,
+  BaseAuthProvider,
+  CoreKernel,
+  IKernel,
+} from '@grandlinex/kernel';
 import { JwtToken } from '@grandlinex/kernel/dist/classes/BaseAuthProvider';
 import { Request } from 'express';
 
@@ -6,9 +11,9 @@ import { Request } from 'express';
  * Example AuthProvider to authorize user
  */
 export default class AuthProvider extends BaseAuthProvider {
-  kernel: IKernel;
+  kernel: CoreKernel<any>;
 
-  constructor(kernel: IKernel) {
+  constructor(kernel: CoreKernel<any>) {
     super();
     this.kernel = kernel;
   }
@@ -38,26 +43,35 @@ export default class AuthProvider extends BaseAuthProvider {
     return null;
   }
 
-  async authorizeToken(
-    username: string,
-    token: string,
-    requestType: string
-  ): Promise<boolean> {
-    if (username !== 'admin') {
-      return false;
-    }
-    const password = this.kernel.getConfigStore().get('SERVER_PASSWORD');
-    if (token !== password) {
-      return false;
-    }
-
-    return true;
-  }
-
-  async validateAcces(token: JwtToken, requestType: string): Promise<boolean> {
+  async validateAccess(token: JwtToken, requestType: string): Promise<boolean> {
     if (token.username) {
       return requestType === 'api' || requestType === 'admin';
     }
     return requestType === 'api';
+  }
+
+  async authorizeToken(
+    userid: string,
+    token: string,
+    requestType: string
+  ): Promise<AuthResult> {
+    if (userid !== 'admin') {
+      return {
+        valid: false,
+        userId: null,
+      };
+    }
+    const password = this.kernel.getConfigStore().get('SERVER_PASSWORD');
+    if (token !== password) {
+      return {
+        valid: false,
+        userId: null,
+      };
+    }
+
+    return {
+      valid: true,
+      userId: 'admin',
+    };
   }
 }

@@ -56,7 +56,7 @@ export default class ListExampleAction extends BaseApiAction {
     const cc = this.getKernel().getCryptoClient() as CryptoClient;
 
     if (data) {
-      const allowed = await cc.permissonValidation(data, 'admin');
+      const allowed = await cc.permissionValidation(data, 'admin');
       if (allowed) {
         const mdb = this.getModule().getDb() as ExampleDB;
         const EEW = mdb.getEntityWrapper<ExampleEntity>('ExampleEntity');
