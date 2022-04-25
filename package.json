@@ -17,7 +17,7 @@
     "serveSpec": "makeOpenApi --serve"
   },
   "dependencies": {
-    "@grandlinex/kernel": "^0.23.0",
+    "@grandlinex/kernel": "^0.23.1",
     "axios": "^0.24.0",
     "express": "^4.17.2"
   },
