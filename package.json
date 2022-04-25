@@ -1,6 +1,6 @@
 {
   "name": "@grandlinex/skeleton",
-  "version": "0.23.0",
+  "version": "0.23.1",
   "description": "GrandLineX Express-Skeleton Project",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
