@@ -3,6 +3,7 @@ import ExampleDB from './database/ExampleDB';
 import ListExampleAction from './action/ListExampleAction';
 
 export default class ExampleModule extends BaseKernelModule<
+  IKernel,
   ExampleDB,
   null,
   null,

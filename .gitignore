@@ -18,3 +18,4 @@ data
 .npmrc
 *.tgz
 swagger.html
+/junit.xml
