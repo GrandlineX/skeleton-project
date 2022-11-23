@@ -1,7 +1,5 @@
 import * as Path from 'path';
-import  {
-  createFolderIfNotExist,
-  sleep
+import { XUtil
 } from "@grandlinex/kernel";
 import axios from "axios";
 import SkeletonKernel from "../src";
@@ -16,8 +14,8 @@ function testKernelUtil(port: number) {
 }
 
 
- createFolderIfNotExist(msiPath);
- createFolderIfNotExist(testPath);
+XUtil.createFolderIfNotExist(msiPath);
+XUtil.createFolderIfNotExist(testPath);
 
 
 let port = 9900;
@@ -101,7 +99,7 @@ describe('Clean Startup', () => {
   test('exit kernel', async () => {
     const result = await kernel.stop();
 
-    await sleep(1000);
+    await XUtil.sleep(1000);
 
     expect(kernel.getState()).toBe('exited');
 
