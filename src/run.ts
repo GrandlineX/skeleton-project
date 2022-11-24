@@ -1,12 +1,12 @@
 import * as Path from 'path';
-import { createFolderIfNotExist } from '@grandlinex/kernel';
+import { XUtil } from '@grandlinex/kernel';
 import SkeletonKernel from './index';
 
 const testPathData = Path.join(__dirname, '..', 'data');
 const testPath = Path.join(__dirname, '..', 'data', 'config');
 
-createFolderIfNotExist(testPathData);
-createFolderIfNotExist(testPath);
+XUtil.createFolderIfNotExist(testPathData);
+XUtil.createFolderIfNotExist(testPath);
 /**
  * Starting the new kernel
  */
