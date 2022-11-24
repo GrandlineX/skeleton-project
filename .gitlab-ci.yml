@@ -1,6 +1,7 @@
+# Internal CI/CD pipeline for the project can be deleted
  include:
  - project: 'grandlinex/templates'
-   file: '/stages.yml'   
+   file: '/stages.yml'
  - project: 'grandlinex/templates'
    file: '/prod/core-bundle.yml'
  - project: 'grandlinex/templates'

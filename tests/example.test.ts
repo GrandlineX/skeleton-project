@@ -28,8 +28,6 @@ describe('Clean Startup', () => {
   let jwtToken:any;
   test('definePreload', async () => {
     expect(kernel.getState()).toBe('init');
-    expect(kernel.getModCount()).toBe(1);
-
   });
   test('start kernel', async () => {
     const result = await kernel.start();

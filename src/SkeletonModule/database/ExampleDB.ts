@@ -15,6 +15,7 @@ export default class ExampleDB extends InMemDB {
   }
 
   async initNewDB(): Promise<void> {
+    // Creates an entity after the database was created the first time
     await this.exampleEntity.createObject(
       new ExampleEntity('HelloWorld', 42, 'GrandLineX example entity')
     );

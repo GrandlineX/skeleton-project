@@ -5,9 +5,7 @@
 
 - Full **Typescript** project setup
 - **Jest** test and coverage config
-- Docker-Compose file for **Development Database**
 - **ESLint** config with AirBnB & Prettier presets
-- GrandLineX **OpenApi** generator config
 - Example **Kernel Extension** code `@/src`
 
 ## Quick Start
@@ -26,5 +24,3 @@
 |`npm run test-converage`| start Jest test collection + coverage report (creates db entry's) |
 |`npm run start-dev`| start dev script with disabled cors |
 |`npm run makeDocs`| generates Typedoc documentation|
-|`npm run makeSpec`| generates OpenApi spec [see](https://grandlinex.github.io/docs/utils/#docs-to-openapi-v3)|
-|`npm run serveSpec`| generates OpenApi spec [see](https://grandlinex.github.io/docs/utils/#docs-to-openapi-v3) + serve Swagger UI|
