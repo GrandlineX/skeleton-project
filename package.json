@@ -1,6 +1,6 @@
 {
   "name": "@grandlinex/skeleton",
-  "version": "0.26.0",
+  "version": "0.27.0",
   "description": "GrandLineX Express-Skeleton Project",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,7 +17,7 @@
     "serveSpec": "makeOpenApi --serve"
   },
   "dependencies": {
-    "@grandlinex/kernel": "^0.26.0",
+    "@grandlinex/kernel": "^0.27.0",
     "axios": "1.1.3",
     "express": "^4.18.2"
   },
