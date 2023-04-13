@@ -1,9 +1,12 @@
 import * as Path from 'path';
 import { XUtil } from '@grandlinex/kernel';
-import SkeletonKernel from './index';
+import * as url from 'url';
+import SkeletonKernel from './index.js';
 
-const testPathData = Path.join(__dirname, '..', 'data');
-const testPath = Path.join(__dirname, '..', 'data', 'config');
+const dirname = url.fileURLToPath(new URL('.', import.meta.url));
+
+const testPathData = Path.join(dirname, '..', 'data');
+const testPath = Path.join(dirname, '..', 'data', 'config');
 
 XUtil.createFolderIfNotExist(testPathData);
 XUtil.createFolderIfNotExist(testPath);

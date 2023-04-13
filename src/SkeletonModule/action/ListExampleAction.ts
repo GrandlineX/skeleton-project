@@ -2,11 +2,12 @@ import {
   BaseApiAction,
   CryptoClient,
   IBaseKernelModule,
+  JwtToken,
 } from '@grandlinex/kernel';
 import e from 'express';
-import { JwtToken } from '@grandlinex/kernel/dist/classes/BaseAuthProvider';
-import { ExampleDB } from '../database';
-import ExampleEntity from '../database/Entities/ExampleEntity';
+
+import ExampleEntity from '../database/Entities/ExampleEntity.js';
+import { ExampleDB } from '../database/index.js';
 
 export default class ListExampleAction extends BaseApiAction {
   constructor(module: IBaseKernelModule<any, any, any, any>) {

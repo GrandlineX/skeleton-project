@@ -52,7 +52,7 @@ describe('Clean Startup', () => {
     expect(json.token).not.toBeUndefined();
     jwtToken=json.token;
     const res = await cc?.jwtVerifyAccessToken(json.token);
-    if (res){
+    if (typeof res !=="number"){
         expect(await cc?.permissionValidation(res,"admin")).toBeTruthy()
         expect(res?.username).toBe("admin");
     }else {

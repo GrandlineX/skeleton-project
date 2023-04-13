@@ -1,11 +1,14 @@
 import Path from 'path';
-import Kernel, { cors, KernelEndpoint, KernelModule } from '@grandlinex/kernel';
-import ExampleModule from './SkeletonModule/ExampleModule';
-import AuthProvider from './SkeletonModule/auth/AuthProvider';
+import { Kernel, cors, KernelEndpoint } from '@grandlinex/kernel';
+import * as url from 'url';
+import ExampleModule from './SkeletonModule/ExampleModule.js';
+import AuthProvider from './SkeletonModule/auth/AuthProvider.js';
+
+const dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 const appName = 'SkeletonApp';
 const appCode = 'skeleton';
-const root = Path.join(__dirname, '..');
+const root = Path.join(dirname, '..');
 /**
  * (@) testPath are the place for storing temp files, db data and configuration
  */
