@@ -4,7 +4,7 @@ import {
   InMemDB,
 } from '@grandlinex/kernel';
 
-import ExampleEntity from './Entities/ExampleEntity';
+import ExampleEntity from './Entities/ExampleEntity.js';
 
 export default class ExampleDB extends InMemDB {
   exampleEntity: CoreEntityWrapper<ExampleEntity>;

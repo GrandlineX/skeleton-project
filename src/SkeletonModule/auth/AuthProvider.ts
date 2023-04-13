@@ -2,9 +2,9 @@ import {
   AuthResult,
   BaseAuthProvider,
   CoreKernel,
-  IKernel,
+  JwtToken,
 } from '@grandlinex/kernel';
-import { JwtToken } from '@grandlinex/kernel/dist/classes/BaseAuthProvider';
+
 import { Request } from 'express';
 
 /**
@@ -18,7 +18,7 @@ export default class AuthProvider extends BaseAuthProvider {
     this.kernel = kernel;
   }
 
-  async bearerTokenValidation(req: Request): Promise<JwtToken | null> {
+  async bearerTokenValidation(req: Request): Promise<JwtToken | number> {
     const cc = this.kernel.getCryptoClient();
     let token: string | undefined;
     if (req.headers.authorization !== undefined) {
@@ -27,20 +27,15 @@ export default class AuthProvider extends BaseAuthProvider {
     } else if (req.query.glxauth !== undefined) {
       token = req.query.glxauth as string;
     } else if (req.headers.cookie !== undefined) {
-      const crumps = req.headers.cookie.trim();
-      const coList = crumps.split(';');
+      const crumbs = req.headers.cookie.trim();
+      const coList = crumbs.split(';');
       const oel = coList.find((el) => el.startsWith('glxauth='));
       token = oel?.split('=')[1];
     }
     if (token === undefined || !cc) {
-      return null;
+      return 401;
     }
-    const tokenData = await cc.jwtVerifyAccessToken(token);
-
-    if (tokenData) {
-      return tokenData;
-    }
-    return null;
+    return cc.jwtVerifyAccessToken(token);
   }
 
   async validateAccess(token: JwtToken, requestType: string): Promise<boolean> {

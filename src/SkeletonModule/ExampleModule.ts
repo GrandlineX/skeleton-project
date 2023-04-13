@@ -1,6 +1,6 @@
 import { BaseKernelModule, IKernel } from '@grandlinex/kernel';
-import ExampleDB from './database/ExampleDB';
-import ListExampleAction from './action/ListExampleAction';
+import ExampleDB from './database/ExampleDB.js';
+import ListExampleAction from './action/ListExampleAction.js';
 
 export default class ExampleModule extends BaseKernelModule<
   IKernel,
