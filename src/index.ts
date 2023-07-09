@@ -1,10 +1,11 @@
 import Path from 'path';
 import { Kernel, cors, KernelEndpoint } from '@grandlinex/kernel';
-import * as url from 'url';
+import { Swagger } from '@grandlinex/swagger-mate';
 import ExampleModule from './SkeletonModule/ExampleModule.js';
 import AuthProvider from './SkeletonModule/auth/AuthProvider.js';
+import swaggerConf from './SwaggerConf';
 
-const dirname = url.fileURLToPath(new URL('.', import.meta.url));
+const dirname = __dirname;
 
 const appName = 'SkeletonApp';
 const appCode = 'skeleton';
@@ -19,6 +20,7 @@ const apiPort = 9257;
 /**
  * Extending GrandLineX with your own kernel interface for your needs
  */
+@Swagger(swaggerConf)
 export default class SkeletonKernel extends Kernel {
   constructor() {
     super({ appName, appCode, pathOverride: testPath, envFilePath: root });

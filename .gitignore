@@ -19,3 +19,5 @@ data
 *.tgz
 swagger.html
 /junit.xml
+/openapi.json
+/gen/

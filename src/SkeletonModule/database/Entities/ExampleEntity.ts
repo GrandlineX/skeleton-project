@@ -19,9 +19,9 @@ export default class ExampleEntity extends CoreEntity {
   })
   description: string | null;
 
-  constructor(title: string, age?: number, description?: string) {
+  constructor(title?: string, age?: number, description?: string) {
     super();
-    this.title = title;
+    this.title = title || '';
     this.age = age || null;
     this.description = description || null;
   }

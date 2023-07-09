@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   testRegex: "(/tests/*.test.ts|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
   coverageReporters: ["html", "text", "text-summary", "cobertura", "lcov"],
   collectCoverageFrom: ["**/*.ts", "!**/node_modules/**","!tests/**"],
@@ -13,10 +13,7 @@ export default {
     // '^.+\\.[tj]sx?$' to process js/ts with `ts-jest`
     // '^.+\\.m?[tj]sx?$' to process js/ts/mjs/mts with `ts-jest`
     "^.+\\.tsx?$": [
-      "ts-jest",
-      {
-        "useESM": true
-      }
+      "ts-jest"
     ]
   }
 };

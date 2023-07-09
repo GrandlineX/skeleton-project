@@ -6,9 +6,20 @@ import {
 } from '@grandlinex/kernel';
 import e from 'express';
 
+import { SPath, SPathUtil } from '@grandlinex/swagger-mate';
 import ExampleEntity from '../database/Entities/ExampleEntity.js';
 import { ExampleDB } from '../database/index.js';
 
+@SPath({
+  '/example/list': {
+    get: {
+      tags: ['Example'],
+      operationId: 'getExampleList',
+      summary: 'Get Example list',
+      responses: SPathUtil.refResponse('200', new ExampleEntity(''), true),
+    },
+  },
+})
 export default class ListExampleAction extends BaseApiAction {
   constructor(module: IBaseKernelModule<any, any, any, any>) {
     super('GET', '/example/list', module, module.getKernel().getModule());
@@ -35,10 +46,7 @@ export default class ListExampleAction extends BaseApiAction {
           res.sendStatus(500);
           return;
         }
-        res
-          .status(200)
-          .header([['Content-Type', 'application/json']])
-          .send(ret);
+        res.status(200).send(ret);
         return;
       }
     }
